@@ -28,7 +28,7 @@ CREATE FOREIGN TABLE IF NOT EXISTS postgres_log
  SERVER logserver OPTIONS (filename 'pg_log/postgresql.csv', format 'csv');
  -- query the log
 
- SELECT log_time, message, detail from postgres_log ORDER BY log_time DESC LIMIT 20;
+ SELECT log_time, message, detail from postgres_log LIMIT 20;
 
  -- import the log to a database table for further analysis (last 1000 items)
  -- CREATE TABLE postgres_log_snapshot AS SELECT * FROM postgres_log ORDER BY log_time limit 1000;
