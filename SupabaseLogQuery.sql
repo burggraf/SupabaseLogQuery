@@ -7,4 +7,4 @@ CREATE FOREIGN TABLE IF NOT EXISTS postgres_log_text
 -- 
 -- read the most recent 20 entries from the log file
 --
-SELECT log_time, message, detail from postgres_log_text LIMIT 20;
+SELECT line from postgres_log_text LIMIT 20;
