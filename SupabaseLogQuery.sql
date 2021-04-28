@@ -26,9 +26,22 @@ CREATE FOREIGN TABLE IF NOT EXISTS postgres_log
   location text,
   application_name text)
  SERVER logserver OPTIONS (filename 'pg_log/postgresql.csv', format 'csv');
- -- query the log
+--
+-- create an alternate table that queries the entire log record as a line of text
+-- in case of corrupted logs, which will not parse correctly
+--
+-- use this table in case you get the error "extra data after last expected column"
+--
+CREATE FOREIGN TABLE IF NOT EXISTS postgres_log_text
+(line text) SERVER logserver OPTIONS (filename 'pg_log/postgresql.csv', format 'text');
 
- SELECT log_time, message, detail from postgres_log LIMIT 20;
+-- query the log as csv
 
- -- import entire log file to a database table for further analysis 
- -- CREATE TABLE postgres_log_snapshot AS SELECT * FROM postgres_log;
+SELECT log_time, message, detail from postgres_log LIMIT 20;
+ 
+-- query the log as text (after error "extra data after last expected column")
+
+SELECT log_time, message, detail from postgres_log_text LIMIT 20;
+
+-- import entire log file to a database table for further analysis 
+-- CREATE TABLE postgres_log_snapshot AS SELECT * FROM postgres_log;
