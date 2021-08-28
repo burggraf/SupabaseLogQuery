@@ -30,11 +30,14 @@ CREATE TABLE IF NOT EXISTS postgres_log
 CREATE OR REPLACE FUNCTION import_postgres_log()
 RETURNS TEXT AS 
 $$
-DECLARE count_original INTEGER;
-DECLARE count_processed INTEGER;
-DECLARE count_final INTEGER;
-DECLARE count_added INTEGER;
+DECLARE 
+  count_original INTEGER;
+  count_processed INTEGER;
+  count_final INTEGER;
+  count_added INTEGER;
+  data_dir TEXT;
 BEGIN
+    SELECT setting || '/pg_log/postgresql.csv' from pg_settings where name = 'data_directory' INTO data_dir;
     CREATE TEMP TABLE IF NOT EXISTS postgres_log_tmp 
     ON COMMIT DROP
     AS
@@ -42,7 +45,8 @@ BEGIN
     FROM postgres_log
     WITH NO DATA;
 
-    COPY postgres_log_tmp FROM '/var/lib/postgresql/data/pg_log/postgresql.csv' WITH csv;
+    EXECUTE 'COPY postgres_log_tmp FROM ''' ||  data_dir || ''' WITH csv';
+
     SELECT COUNT(*) FROM postgres_log_tmp INTO count_processed;
     SELECT COUNT(*) FROM postgres_log INTO count_original;
 
