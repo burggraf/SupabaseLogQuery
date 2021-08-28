@@ -27,3 +27,10 @@ BEGIN
 
 END;
 $$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION get_postgres_log(how_many INTEGER)
+RETURNS SETOF postgres_log AS 
+$$
+SELECT import_postgres_log();
+SELECT * from postgres_log ORDER BY log_time DESC LIMIT how_many;
+$$ LANGUAGE SQL;
