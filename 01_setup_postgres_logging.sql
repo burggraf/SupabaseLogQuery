@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS postgres_log
   query_pos text,
   location text,
   application_name text,
-  extra text
+  extra text,
   PRIMARY KEY (session_id, session_line_num)
 );
 
