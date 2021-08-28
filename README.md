@@ -40,6 +40,8 @@ Read the most recent 100 entries as RAW TEXT from the log file:
 `SELECT log_entry from postgres_log_text LIMIT 100;`
 
 
+## Notes:
+In order to handle older Supabase projects that are still running PostgreSQL 12.x, we check the version number and create the `postgres_log` table dynamically.  Version 13 requires an extra field at the end.  In addition, the default `data_directory` is different between versions, so we detect the location of the log file automatically as well.
 
 
 
