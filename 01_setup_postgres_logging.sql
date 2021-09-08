@@ -85,4 +85,4 @@ $$
   SELECT import_postgres_log();
   SELECT * from postgres_log ORDER BY log_time DESC LIMIT how_many;
 $$ LANGUAGE SQL;
-
+/* end */
